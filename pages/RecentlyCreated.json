@@ -1,0 +1,14 @@
+[
+  {
+    "checkpoints": [{}, {}, {}, {}],
+    "distance": 5.32,
+    "type": "adventure",
+    "createdBy": "georg3"
+  },
+  {
+    "checkpoints": [{}, {}, {}, {}, {}, {}, {}],
+    "distance": 13.48,
+    "type": "lookout",
+    "createdBy": "matthew-7"
+  }
+]
