@@ -1,7 +1,4 @@
-import Head from 'next/head'
-import Image from 'next/image'
 import Link from 'next/link'
-import styles from '../styles/Home.module.css'
 
 export default function Home() {
   return (
@@ -12,8 +9,10 @@ export default function Home() {
             <h1 className='text-4xl tracking-[-2.34px] italic font-black uppercase'>Athleague</h1>
             <h2 className='text-xl tracking-wide font-medium uppercase'>Play through IRL activity circuits stored on Ethereum with this exercise-based dApp.</h2>
           </div>
-          <Link href='/home'>
-            <div className='bg-zinc-200 hover:bg-lime-400 hover:shadow hover:border-zinc-50 hover:text-white transition ease-in-out duration-100 border rounded-full px-4 py-1 font-medium cursor-pointer text-white uppercase tracking-tight'>GO TO APP</div>
+          <Link href={'/home'}>
+            <a>
+              <div className='bg-zinc-200 hover:bg-lime-400 hover:shadow hover:border-zinc-50 hover:text-white transition ease-in-out duration-100 border rounded-full px-4 py-1 font-medium cursor-pointer text-white uppercase tracking-tight'>GO TO APP</div>
+            </a>
           </Link>
         </div>
       </div>

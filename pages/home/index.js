@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react'
 import Map, { Marker, Popup } from 'react-map-gl'
-import { TrashIcon, ArrowUturnDownIcon, PencilSquareIcon, ArrowLeftIcon } from '@heroicons/react/24/solid'
+import { TrashIcon, ArrowUturnRightIcon, PencilSquareIcon, ArrowLeftIcon } from '@heroicons/react/24/solid'
 import { NavigationControl } from 'react-map-gl'
 import { GeolocateControl } from 'react-map-gl'
 import { ScaleControl } from 'react-map-gl'
-import { Link } from 'next/link'
+import  Link  from 'next/link'
 
 const TOKEN = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN
 
@@ -88,9 +88,8 @@ export default function Home() {
         {/* RENDER CHECKPOINTS */}
         {checkpoints.map((marker, index) => {
           return (
-            <>
+            <div key={index}>
               <Marker
-                key={index}
                 latitude={marker.lat}
                 longitude={marker.long}
                 anchor='top'
@@ -175,7 +174,7 @@ export default function Home() {
                   </div>
                 </Popup>
               )}
-            </>
+            </div>
           )
         })}
 
@@ -183,14 +182,18 @@ export default function Home() {
           id='upper-HUD'
           className='flex w-full px-2 space-x-2 justify-start items-center absolute top-2 z-2'
         >
-          <div
-            className='flex w-10 h-10 bg-slate-700 rounded-full items-center justify-center opacity-90 border-2 border-slate-100/30'
-            onClick={() => setShowQuit(true)}
-          >
-            <ArrowLeftIcon className='text-white'/>
-          </div>
+          <Link href={'/'}>
+            <a>
+              <div
+                className='flex w-10 h-10 bg-primary rounded-full items-center justify-center cursor-pointer border-2 border-slate-100/30'
+                onClick={() => setShowQuit(true)}
+              >
+                <ArrowLeftIcon className='text-primary h-6 w-6'/>
+              </div>
+            </a>
+          </Link>
 
-          <div className='flex flex-col space-y-2 w-3/5 md:w-2/5 lg:w-1/3 items-center justify-center bg-slate-200/90 rounded-xl border-2 border-slate-800/30 shadow animate-fade-in-down'>
+          <div className='flex flex-col space-y-2 w-3/5 md:w-2/5 lg:w-1/3 items-center justify-center bg-primary rounded-xl border-2 border-slate-800/30 shadow animate-fade-in-down'>
             {/* <WalletBalance /> */}
             <div className='flex flex-col w-full items-center justify-center'>
               <div className='flex flex-col w-full p-2 rounded-md items-center justify-center'>
@@ -202,7 +205,6 @@ export default function Home() {
                     Longitude: <b>{viewState.longitude.toFixed(4)}</b>
                   </p>
                 </div>
-                <div className='border-b border-slate-300 flex w-5/6' />
               </div>
             </div>
           </div>
@@ -217,7 +219,7 @@ export default function Home() {
           >
             {checkpoints.map((checkpoint, index) => (
               // <div className='rounded-full border shadow w-8 h-8 bg-slate-500' />
-              <>
+              <div key={index}>
                 {index === 0 ? (
                   // START
                   <div
@@ -251,6 +253,7 @@ export default function Home() {
                     </div>
                   </div>
                 ) : (
+                  // BETWEEN START AND FINISH
                   <div
                     className='h-10 w-10 rounded-full bg-gradient-to-br from-sky-500/80 hover:from-blue-500/70 hover:to-sky-500/70 to-blue-500/80 border-2 border-blue-200/80 hover:border-sky-200/70 justify-center items-center'
                     onClick={() => {
@@ -266,26 +269,30 @@ export default function Home() {
                     </div>
                   </div>
                 )}
-              </>
+              </div>
             ))}
-            {/* </div> */}
           </div>
+          
+          {/* BOTTOM HUD */}
           <div
             id='bottom-HUD'
             className='flex w-full md:w-2/3 lg:w-1/2 justify-around space-x-4 items-center'
           >
-            <div id='undo-redo' className='flex w-1/3 justify-center'>
+            {/* UNDO BUTTON */}
+            <div id='undo' className='flex w-1/3 justify-center'>
               <div className='flex w-full justify-center'>
                 {checkpoints.length === 0 ? (
+                  // DISABLED
                   <div
-                    className='flex flex-col w-12 h-12 justify-center items-center bg-slate-200 p-3 rounded-xl border-2 border-slate-300 shadow-md text-2xl font-black
+                    className='flex flex-col w-12 h-12 cursor-not-allowed justify-center items-center bg-slate-200 p-3 rounded-xl border-2 border-slate-300 shadow-md text-2xl font-black
                           opacity-50'
                   >
-                    <ArrowUturnDownIcon />
+                    <ArrowUturnRightIcon className='rotate-180 text-slate-500'  />
                   </div>
                 ) : (
+                  // ENABLED
                   <div
-                    className='flex flex-col w-12 h-12 justify-center items-center bg-slate-200 p-3 rounded-xl border-2 border-slate-300 shadow-md text-2xl font-black'
+                    className='flex flex-col w-12 h-12 cursor-pointer justify-center items-center bg-slate-200 p-3 rounded-xl border-2 border-slate-300 shadow-md text-2xl font-black'
                     onClick={() => {
                       checkpoints.pop()
                       console.log(
@@ -295,37 +302,34 @@ export default function Home() {
                       setViewState({ ...viewState })
                     }}
                   >
-                    <ArrowUturnDownIcon />
+                    <ArrowUturnRightIcon className='rotate-180 text-slate-500' />
                   </div>
                 )}
-                {/* <div className='flex flex-col w-full h-12 justify-center items-center bg-slate-200 p-3 rounded-xl border-2 border-slate-300 shadow-md text-2xl font-black opacity-50'>
-                              <RedoIcon />
-                          </div> */}
               </div>
             </div>
             {checkpoints.length <= 1 ? (
-              <div className='flex w-1/3 justify-center cursor-pointer'>
+              <div className='flex w-1/3 justify-center'>
                 <button
-                  className='flex space-x-2 w-full text-center items-center justify-center bg-green-500 border-2 border-lime-200 p-3 rounded-xl opacity-50'
+                  className='flex space-x-2 w-full cursor-not-allowed text-center items-center justify-center bg-zinc-500 border-2 border-zinc-200 p-2 rounded-xl opacity-50'
                   type='submit'
                   onClick={() => {
                     setShowSave(!showSave)
                   }}
                 >
-                  <h1 className='flex'>Save Course</h1>
-                  <PencilSquareIcon className='w-8 h-8 text-[#b8fa93]'/>
+                  <h1 className=''>Save Course</h1>
+                  <PencilSquareIcon className='w-8 h-8 text-[#1e1e1e]'/>
                 </button>
               </div>
             ) : (
-              <div className='flex w-1/3 justify-center cursor-pointer'>
+              <div className='flex w-1/3 justify-center'>
                 <button
-                  className='flex space-x-2 w-full text-center items-center justify-center bg-green-500 border-2 border-lime-200 p-3 rounded-xl'
+                  className='flex space-x-2 w-full cursor-pointer text-center items-center justify-center bg-green-500 border-2 border-lime-200 p-2 rounded-xl'
                   type='submit'
                   onClick={() => {
                     setShowSave(!showSave)
                   }}
                 >
-                  <h1 className='flex curs'>Save Course</h1>
+                  <h1 className=''>Save Course</h1>
                   <PencilSquareIcon className='w-8 h-8 text-[#b8fa93]'/>
                 </button>
               </div>
@@ -334,14 +338,14 @@ export default function Home() {
             <div className='flex w-1/3 justify-center'>
               {checkpoints.length === 0 ? (
                 <div
-                  className='flex flex-col w-12 h-12 justify-center items-center bg-red-200 p-3 rounded-xl border-2 border-red-300 shadow-md text-2xl font-black opacity-50'
+                  className='flex flex-col w-12 h-12 cursor-not-allowed justify-center items-center bg-red-200 p-3 rounded-xl border-2 border-red-300 shadow-md text-2xl font-black opacity-50'
                   onClick={() => setShowClear(true)}
                 >
                   <TrashIcon className='text-[#b02727]' />
                 </div>
               ) : (
                 <div
-                  className='flex flex-col w-12 h-12 justify-center items-center bg-red-200 p-3 rounded-xl border-2 border-red-300 shadow-md text-2xl font-black'
+                  className='flex flex-col w-12 h-12 cursor-pointer justify-center items-center bg-red-200 p-3 rounded-xl border-2 border-red-300 shadow-md text-2xl font-black'
                   onClick={() => setShowClear(true)}
                 >
                   <TrashIcon className='text-[#b02727]' />
@@ -351,6 +355,7 @@ export default function Home() {
           </div>
         </div>
 
+        {/* MODALS */}
         {showSave && (
           <div
             id='save'
@@ -475,7 +480,6 @@ export default function Home() {
             </div>
           </div>
         )}
-
         {showClear && (
           <div
             id='save'

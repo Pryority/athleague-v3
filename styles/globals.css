@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+  .text-primary {
+    @apply text-slate-900 dark:text-slate-50;
+  }
+  .bg-primary {
+    @apply bg-slate-100 dark:bg-slate-800;
+  }
+}
+
 html,
 body {
   padding: 0;
